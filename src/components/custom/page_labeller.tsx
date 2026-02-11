@@ -80,7 +80,7 @@ export default function PageLabeller(props: Props) {
 
             <div>
                 <div className={`text-3xl font-bold`}>Label Page</div>
-                <div className={`text-xs text-gray-500`}>{props.pageUrl}</div>
+                <div className={`text-xs text-gray-400`}>{props.pageUrl}</div>
             </div>
 
             <FieldGroup>
