@@ -52,7 +52,7 @@ export default function PageLabeller(props: Props) {
             const validatedInput = validatePageLabelInput(input);
             console.log("Validated input:", validatedInput);
 
-            await fetch('http://localhost:3000/api/label', {
+            await fetch('/api/label', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

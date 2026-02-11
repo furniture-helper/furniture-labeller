@@ -9,7 +9,7 @@ export default function useBrands() {
     useEffect(() => {
         async function fetchBrands() {
             try {
-                const response = await fetch('http://localhost:3000/api/brands');
+                const response = await fetch('/api/brands');
                 if (!response.ok) {
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }

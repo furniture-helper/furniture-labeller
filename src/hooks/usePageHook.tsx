@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import {useEffect, useState} from 'react';
 import {GetPageResponse} from "@/types/pages";
 
 export default function usePage() {
@@ -9,7 +9,7 @@ export default function usePage() {
     useEffect(() => {
         const fetchPageData = async () => {
             try {
-                const response = await fetch('http://localhost:3000/api/pages');
+                const response = await fetch('/api/pages');
                 if (!response.ok) {
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }
@@ -29,5 +29,5 @@ export default function usePage() {
         fetchPageData();
     }, []);
 
-    return { data, loading, error };
+    return {data, loading, error};
 }
