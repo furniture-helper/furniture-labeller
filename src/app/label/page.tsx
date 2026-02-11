@@ -1,0 +1,39 @@
+"use client";
+
+import usePage from "@/hooks/usePageHook";
+import PageLabeller from "@/components/custom/page_labeller";
+
+export default function LabelPage() {
+    const {data, loading, error} = usePage();
+
+    if (loading) {
+        return <div>Loading...</div>;
+    }
+
+    if (error) {
+        return <div>Error: {error}</div>;
+    }
+
+
+    const signedUrl = data?.signedUrl || 'N/A';
+    const scale = 1;
+
+    return (
+        <div className="flex flex-row h-screen p-5 space-x-10">
+            <div className="w-full overflow-hidden rounded-md border-2 border-slate-700">
+                <iframe
+                    className="rounded-md"
+                    src={signedUrl}
+                    style={{
+                        transform: `scale(${scale})`,
+                        transformOrigin: 'top left',
+                        width: `${100 / scale}%`,
+                        height: `${100 / scale}%`,
+                    }}
+                />
+            </div>
+
+            <PageLabeller pageUrl={data!.url} s3_key={data!.s3_key}/>
+        </div>
+    );
+}
