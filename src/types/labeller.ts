@@ -1,9 +1,9 @@
 import {isUrl} from "@/utils/url_utils";
 import {removeAllNonNumericCharacters} from "@/utils/string_utils";
 
-export type PageType = 'product' | 'home' | 'product_list' | 'other';
+export type PageType = 'product' | 'home' | 'product_list' | 'error' | 'other';
 
-export const PAGE_TYPES: PageType[] = ['product', 'home', 'product_list', 'other'];
+export const PAGE_TYPES: PageType[] = ['product', 'home', 'product_list', 'error', 'other'];
 
 export function isValidPageType(value: string): value is PageType {
     return PAGE_TYPES.includes(value as PageType);
