@@ -95,6 +95,7 @@ export default function PageLabeller(props: Props) {
                                 <SelectItem value="product">Product</SelectItem>
                                 <SelectItem value="home">Home Page</SelectItem>
                                 <SelectItem value="product_list">Product List</SelectItem>
+                                <SelectItem value="error">Error</SelectItem>
                                 <SelectItem value="other">Other</SelectItem>
                             </SelectGroup>
                         </SelectContent>
