@@ -4,7 +4,7 @@ import {GetPageResponse} from "@/types/pages";
 
 export async function GET() {
 
-    const query = "SELECT url, s3_key FROM pages ORDER BY RANDOM() LIMIT 1";
+    const query = "SELECT url, s3_key FROM pages WHERE s3_key IS NOT 'NOT_CRAWLED' ORDER BY RANDOM() LIMIT 1";
     const queryResult = await PgClient.query(query);
 
     const url = queryResult.rows[0]?.url || null;
