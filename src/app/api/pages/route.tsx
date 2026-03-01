@@ -3,9 +3,14 @@ import {s3Client} from "@/storage_connector/s3Client";
 import {GetPageResponse} from "@/types/pages";
 
 export async function GET() {
+    const domainsQuery = "SELECT DISTINCT domain FROM pages";
+    const domainsResult = await PgClient.query(domainsQuery);
+    const domains = domainsResult.rows.map((row) => row.domain);
 
-    const query = "SELECT url, s3_key FROM pages WHERE s3_key != 'NOT_CRAWLED' ORDER BY RANDOM() LIMIT 1";
-    const queryResult = await PgClient.query(query);
+    const randomDomain = domains[Math.floor(Math.random() * domains.length)];
+
+    const query = "SELECT url, s3_key FROM pages WHERE s3_key != 'NOT_CRAWLED' AND domain = $1 ORDER BY RANDOM() LIMIT 1";
+    const queryResult = await PgClient.query(query, [randomDomain]);
 
     const url = queryResult.rows[0]?.url || null;
     const s3Key = queryResult.rows[0]?.s3_key || null;
