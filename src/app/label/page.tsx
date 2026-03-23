@@ -9,10 +9,6 @@ export default function LabelPage() {
         "pettahkade.lk",
         "raesl.lk",
         "finez.lk",
-        "bigdeals.lk",
-        "homelux.lk",
-        "strong.lk",
-        "singhagiri.lk"
     ]);
 
     if (loading) {
