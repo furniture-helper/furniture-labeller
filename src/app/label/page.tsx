@@ -4,7 +4,16 @@ import usePage from "@/hooks/usePageHook";
 import PageLabeller from "@/components/custom/page_labeller";
 
 export default function LabelPage() {
-    const {data, loading, error} = usePage();
+    const {data, loading, error} = usePage([
+        "buyabans.com",
+        "pettahkade.lk",
+        "raesl.lk",
+        "finez.lk",
+        "bigdeals.lk",
+        "homelux.lk",
+        "strong.lk",
+        "singhagiri.lk"
+    ]);
 
     if (loading) {
         return <div>Loading...</div>;

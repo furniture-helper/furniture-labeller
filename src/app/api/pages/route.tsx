@@ -2,10 +2,21 @@ import {PgClient} from "@/db_connector/pgClient";
 import {s3Client} from "@/storage_connector/s3Client";
 import {GetPageResponse} from "@/types/pages";
 
-export async function GET() {
-    const domainsQuery = "SELECT DISTINCT domain FROM pages";
-    const domainsResult = await PgClient.query(domainsQuery);
-    const domains = domainsResult.rows.map((row) => row.domain);
+export async function GET(request: Request) {
+    const { searchParams } = new URL(request.url);
+    const domainsParam = searchParams.get('domains');
+    const domainFilter: string[] | null = domainsParam
+        ? domainsParam.split(',').map((d) => d.trim()).filter(Boolean)
+        : null;
+
+    let domains: string[];
+    if (domainFilter && domainFilter.length > 0) {
+        domains = domainFilter;
+    } else {
+        const domainsQuery = "SELECT DISTINCT domain FROM pages";
+        const domainsResult = await PgClient.query(domainsQuery);
+        domains = domainsResult.rows.map((row) => row.domain);
+    }
 
     const randomDomain = domains[Math.floor(Math.random() * domains.length)];
 
