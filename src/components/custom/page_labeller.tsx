@@ -15,6 +15,7 @@ import {Button} from "@/components/ui/button";
 import {PageLabelInput, validatePageLabelInput} from "@/types/labeller";
 import {Brand} from "@/types/brands";
 import {Spinner} from "@/components/ui/spinner";
+import usePagePrediction from "@/hooks/usePagePredictionHook";
 
 type Props = {
     pageUrl: string;
@@ -30,7 +31,22 @@ export default function PageLabeller(props: Props) {
     const [otherBrand, setOtherBrand] = useState<string | null>(null);
     const [inStock, setInStock] = useState<boolean | null>(null);
 
+    const {
+        data: predictionData,
+        loading: predictionLoading,
+        error: predictionError
+    } = usePagePrediction(props.pageUrl);
     const {brands} = useBrands();
+
+    let predictionContent;
+    if (predictionLoading) {
+        predictionContent = "Loading...";
+    } else if (predictionError) {
+        predictionContent = "Error";
+    } else {
+        predictionContent = predictionData?.type;
+    }
+
 
     const [loading, setLoading] = useState(false);
 
@@ -100,6 +116,9 @@ export default function PageLabeller(props: Props) {
                             </SelectGroup>
                         </SelectContent>
                     </Select>
+                    <FieldLabel className={"text-xs text-gray-400"}>
+                        Prediction: {predictionContent}
+                    </FieldLabel>
                 </Field>
             </FieldGroup>
 

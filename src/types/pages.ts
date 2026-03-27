@@ -3,3 +3,7 @@ export type GetPageResponse = {
     signedUrl: string;
     s3_key: string;
 }
+
+export type GetPagePredictionResponse = {
+    type: string;
+}

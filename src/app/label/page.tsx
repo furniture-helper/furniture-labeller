@@ -10,6 +10,7 @@ export default function LabelPage() {
         "raesl.lk",
         "finez.lk",
     ]);
+    
 
     if (loading) {
         return <div>Loading...</div>;
@@ -18,7 +19,6 @@ export default function LabelPage() {
     if (error) {
         return <div>Error: {error}</div>;
     }
-
 
     const signedUrl = data?.signedUrl || 'N/A';
     const scale = 1;
