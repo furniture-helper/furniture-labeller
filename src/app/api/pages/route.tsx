@@ -3,7 +3,7 @@ import {s3Client} from "@/storage_connector/s3Client";
 import {GetPageResponse} from "@/types/pages";
 
 export async function GET(request: Request) {
-    const { searchParams } = new URL(request.url);
+    const {searchParams} = new URL(request.url);
     const domainsParam = searchParams.get('domains');
     const domainFilter: string[] | null = domainsParam
         ? domainsParam.split(',').map((d) => d.trim()).filter(Boolean)
@@ -34,9 +34,19 @@ export async function GET(request: Request) {
     }
 
     const signedUrl = await s3Client.getSignedUrl(s3Key);
+
+    let minimizedSignedUrl = ""
+    try {
+        minimizedSignedUrl = await s3Client.getMinimizedSignedUrl(s3Key);
+    } catch (error) {
+        console.error(error);
+        minimizedSignedUrl = "error";
+    }
+
     const getPageResponse: GetPageResponse = {
         url: url,
         signedUrl: signedUrl,
+        minimizedSignedUrl: minimizedSignedUrl,
         s3_key: s3Key
     }
 

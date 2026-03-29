@@ -1,6 +1,7 @@
 export type GetPageResponse = {
     url: string;
     signedUrl: string;
+    minimizedSignedUrl: string;
     s3_key: string;
 }
 
