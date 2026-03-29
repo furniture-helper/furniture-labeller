@@ -2,7 +2,7 @@ import {GetObjectCommand, S3Client} from '@aws-sdk/client-s3';
 import {getSignedUrl} from '@aws-sdk/s3-request-presigner';
 
 const S3_BUCKET_NAME = process.env.AWS_S3_BUCKET;
-const S3_MNINIMIZED_BUCKET_NAME = process.env.AWS_S3_MNINIMIZED_BUCKET_NAME;
+const S3_MINIMIZED_BUCKET_NAME = process.env.AWS_S3_MINIMIZED_BUCKET_NAME;
 const AWS_REGION = process.env.AWS_REGION || 'eu-west-1';
 
 const s3 = new S3Client({region: AWS_REGION});
@@ -30,11 +30,11 @@ export class s3Client {
     }
 
     public static async getMinimizedSignedUrl(key: string, expiresInSeconds: number = 60): Promise<string> {
-        if (!S3_MNINIMIZED_BUCKET_NAME) {
+        if (!S3_MINIMIZED_BUCKET_NAME) {
             throw new Error('AWS_S3_MNINIMIZED_BUCKET_NAME environment variable is not set');
         }
         const command = new GetObjectCommand({
-            Bucket: S3_MNINIMIZED_BUCKET_NAME,
+            Bucket: S3_MINIMIZED_BUCKET_NAME,
             Key: key,
             ResponseContentDisposition: 'inline',
             ResponseContentType: 'text/html',
