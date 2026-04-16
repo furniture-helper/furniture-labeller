@@ -12,10 +12,11 @@ import {
     ComboboxList
 } from "@/components/ui/combobox";
 import {Button} from "@/components/ui/button";
-import {PageLabelInput, validatePageLabelInput} from "@/types/labeller";
+import {isValidPageType, PageLabelInput, PageType, validatePageLabelInput} from "@/types/labeller";
 import {Brand} from "@/types/brands";
 import {Spinner} from "@/components/ui/spinner";
 import usePagePrediction from "@/hooks/usePagePredictionHook";
+import {useEffect} from "react";
 
 type Props = {
     pageUrl: string;
@@ -23,28 +24,49 @@ type Props = {
 }
 
 export default function PageLabeller(props: Props) {
-    const [pageType, setPageType] = useState<string>("product");
+    const [pageType, setPageType] = useState<PageType>("product");
     const [productTitle, setProductTitle] = useState<string | null>(null);
     const [productImage, setProductImage] = useState<string | null>(null);
     const [productPrice, setProductPrice] = useState<string | null>(null);
     const [brandId, setBrandId] = useState<number | null>(null);
     const [otherBrand, setOtherBrand] = useState<string | null>(null);
     const [inStock, setInStock] = useState<boolean | null>(null);
+    const [hasEditedPageType, setHasEditedPageType] = useState(false);
 
     const {
         data: predictionData,
         loading: predictionLoading,
         error: predictionError
     } = usePagePrediction(props.pageUrl);
+
     const {brands} = useBrands();
 
+    useEffect(() => {
+        if (predictionData?.title) {
+            setProductTitle((currentTitle) => currentTitle ?? predictionData.title ?? null);
+        }
+
+        if (predictionData?.price !== undefined) {
+            setProductPrice((currentPrice) => currentPrice ?? String(predictionData.price));
+        }
+
+        if (!hasEditedPageType && predictionData?.type && isValidPageType(predictionData.type)) {
+            setPageType(predictionData.type);
+        }
+    }, [hasEditedPageType, predictionData]);
+
     let predictionContent;
+    let predictionTitle;
+    let predictionPrice;
+
     if (predictionLoading) {
         predictionContent = "Loading...";
     } else if (predictionError) {
         predictionContent = "Error";
     } else {
         predictionContent = predictionData?.type;
+        predictionTitle = predictionData?.title
+        predictionPrice = predictionData?.price
     }
 
 
@@ -102,7 +124,16 @@ export default function PageLabeller(props: Props) {
             <FieldGroup>
                 <Field>
                     <FieldLabel>Page type</FieldLabel>
-                    <Select onValueChange={setPageType} defaultValue={pageType} disabled={loading}>
+                    <Select
+                        onValueChange={(value) => {
+                            if (!isValidPageType(value)) return;
+
+                            setHasEditedPageType(true);
+                            setPageType(value);
+                        }}
+                        value={pageType}
+                        disabled={loading}
+                    >
                         <SelectTrigger className="w-[180px]">
                             <SelectValue placeholder="Page Type"/>
                         </SelectTrigger>
@@ -129,6 +160,10 @@ export default function PageLabeller(props: Props) {
                         <Input onChange={(e) => setProductTitle(e.target.value)}
                                value={productTitle ? productTitle : ""} disabled={loading}/>
                     </Field>
+                    <FieldLabel className={"text-xs text-gray-400"}>
+                        Prediction: {predictionTitle}
+                    </FieldLabel>
+
                 </FieldGroup>
             }
 
@@ -150,6 +185,9 @@ export default function PageLabeller(props: Props) {
                         <Input onChange={(e) => setProductPrice(e.target.value)}
                                value={productPrice ? productPrice : ""} disabled={loading}/>
                     </Field>
+                    <FieldLabel className={"text-xs text-gray-400"}>
+                        Prediction: {predictionPrice}
+                    </FieldLabel>
                 </FieldGroup>
             }
 

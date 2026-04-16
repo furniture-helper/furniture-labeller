@@ -7,4 +7,6 @@ export type GetPageResponse = {
 
 export type GetPagePredictionResponse = {
     type: string;
+    title?: string;
+    price?: number;
 }
