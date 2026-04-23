@@ -5,20 +5,8 @@ import PageLabeller from "@/components/custom/page_labeller";
 
 export default function LabelPage() {
     const {data, loading, error} = usePage([
-        "homelux.lk",
-        "bigdeals.lk",
-        "strong.lk",
-        "mysoftlogic.lk",
-        "ugreen.lk",
-        "buyabans.com",
-        "singhagiri.lk",
-        "pettahkade.lk",
-        "finez.lk",
-        "raesl.lk",
-        "damro.lk",
-        "fireworks.lk",
-        "nanotek.lk",
-        "simplytek.lk",
+        // "geniusmobile.lk",
+        // "dialcom.lk"
     ]);
 
 
