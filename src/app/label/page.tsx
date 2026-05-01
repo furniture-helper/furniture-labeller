@@ -4,11 +4,7 @@ import usePage from "@/hooks/usePageHook";
 import PageLabeller from "@/components/custom/page_labeller";
 
 export default function LabelPage() {
-    const {data, loading, error} = usePage([
-        // "geniusmobile.lk",
-        // "dialcom.lk"
-    ]);
-
+    const {data, loading, error} = usePage([]);
 
     if (loading) {
         return <div>Loading...</div>;
