@@ -20,7 +20,7 @@ export async function GET(request: Request) {
 
     const randomDomain = domains[Math.floor(Math.random() * domains.length)];
 
-    const query = "SELECT url, s3_key FROM pages WHERE s3_key != 'NOT_CRAWLED' AND domain = $1 ORDER BY RANDOM() LIMIT 1";
+    const query = "SELECT pages.url, s3_key FROM pages INNER JOIN page_inferred_labels on pages.url = page_inferred_labels.url WHERE s3_key != 'NOT_CRAWLED' AND domain = $1 AND page_inferred_labels.last_inferred_at > NOW() - INTERVAL '24 hours' ORDER BY RANDOM() LIMIT 1";
     const queryResult = await PgClient.query(query, [randomDomain]);
 
     const url = queryResult.rows[0]?.url || null;
